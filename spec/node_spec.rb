@@ -1,16 +1,18 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe SingleLinkedList::Node do
   let(:node) { SingleLinkedList::Node.new }
-  let(:data) { node.data }
-  let(:pointer) { node.pointer }
-    
-  it 'contains data' do
-    expect(data).not_to be_nil
+  
+  describe "#data" do
+    it "returns a value" do
+      expect(node.data).not_to be_nil
+    end
   end
   
-  it 'contains a pointer' do
-    expect(pointer).not_to be_nil
+  describe "#pointer" do
+    it "returns a value" do
+      expect(node.pointer).not_to be_nil
+    end
   end
 end
 

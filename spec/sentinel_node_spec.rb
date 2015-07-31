@@ -1,16 +1,18 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe SingleLinkedList::SentinelNode do
   let(:node) { SingleLinkedList::SentinelNode.new }
-  let(:data) { node.data }
-  let(:pointer) { node.pointer }
-    
-  it 'does not contain data' do
-    expect(data).to be_nil
+  
+  describe "#data" do
+    it "should return nil" do
+      expect(node.data).to be_nil
+    end
   end
   
-  it 'does not contain a pointer' do
-    expect(pointer).to be_nil
+  describe "#pointer" do
+    it "should return nil" do
+      expect(node.pointer).to be_nil
+    end
   end
 end
 
