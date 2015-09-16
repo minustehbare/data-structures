@@ -33,7 +33,7 @@ class SingleLinkedList
       i += 1
     }
   end
-  
+
   def each
     return nil unless @head
     
@@ -43,6 +43,19 @@ class SingleLinkedList
       node = node.pointer
     end
   end
+
+  def inspect
+    output = "["
+    self.each { |n|
+      if output == "["
+        output = "#{output}#{n.data}"
+      else
+        output = "#{output} -> #{n.data}"
+      end
+    }
+    
+    return "#{output}]"
+  end
   
   class Node
     attr_accessor :pointer
@@ -51,6 +64,10 @@ class SingleLinkedList
     def initialize(data = nil)
       data = Random.rand(1..99) unless data
       @data = data
+    end
+
+    def inspect
+      return "#{@data} -> #{pointer.inspect}"
     end
   end
 end

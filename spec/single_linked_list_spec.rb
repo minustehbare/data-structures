@@ -4,7 +4,17 @@ describe SingleLinkedList do
   let(:list) { SingleLinkedList.new }
   let(:head) { list.head }
   let(:tail) { list.tail }
+  let(:inspect) { list.inspect }
   
+  shared_examples "a populated list" do
+    before { list.prepend(SingleLinkedList::Node.new) }
+    
+    describe "the head node" do
+      subject { head }
+      it_behaves_like "a list node"
+    end
+  end
+
   shared_examples "a list node" do
     before { list.prepend(SingleLinkedList::Node.new) }
     subject { head }
@@ -13,7 +23,7 @@ describe SingleLinkedList do
   end
   
   context "when the list is empty" do
-    describe "the node" do
+    describe "the head node" do
       subject { head }
       it { is_expected.to be_nil }
     end
@@ -22,28 +32,19 @@ describe SingleLinkedList do
       subject { tail }
       it { is_expected.to be_nil }
     end
-  end
-  
-  context "when the list is not empty" do
-    before { list.prepend(SingleLinkedList::Node.new) }
-    
-    describe "the head node" do
-      it_behaves_like "a list node"
-    end
-    
-    describe "the tail node" do
-      it_behaves_like "a list node"
-    end
-    
-    describe "the tail node's pointer" do
-      subject { tail.pointer }
-      it { is_expected.to be_nil }
+
+    describe "#inspect" do
+      it "should be empty" do
+        expect(inspect).to eql("[]")
+      end
     end
   end
-  
+
   context "when the list has exactly one node" do
     before { list.prepend(SingleLinkedList::Node.new) }
     
+    it_behaves_like "a populated list"
+
     describe "the head node's pointer" do
       subject { head.pointer }
       it { is_expected.to be_nil }
@@ -54,10 +55,17 @@ describe SingleLinkedList do
         expect(tail).to equal(head)
       end
     end
+    
+    describe "#inspect" do
+      it "contains the head data" do
+        expect(inspect).to eql("[#{head.data}]")
+      end
+    end
   end
   
   context "when the list has two nodes" do
     before { 2.times { list.prepend(SingleLinkedList::Node.new) } }
+    it_behaves_like "a populated list"
     
     describe "the head node's pointer" do
       subject(:pointer) { head.pointer }
@@ -66,20 +74,49 @@ describe SingleLinkedList do
         expect(pointer).to equal(tail)
       end
     end
-    
+
     describe "the tail node" do
+      subject { tail }
+      it_behaves_like "a list node"
+
       it "is not the same as the head" do
         expect(tail).not_to equal(head)
+      end
+    end
+    
+    describe "#inspect" do
+      it "contains the head data pointing to the tail data" do
+        expect(inspect).to eql("[#{head.data} -> #{tail.data}]")
       end
     end
   end
   
   context "when the list has three or more nodes" do
     before { 10.times { list.prepend(SingleLinkedList::Node.new) } }
-    
+    it_behaves_like "a populated list"
+
+    describe "the tail node" do
+      subject { tail }
+      it_behaves_like "a list node"
+
+      it "is not the same as the head" do
+        expect(tail).not_to equal(head)
+      end
+    end
+
     describe "the head node's pointer" do
       it "does not point to the tail" do
         expect(head.pointer).not_to equal(tail)
+      end
+    end
+
+    describe "#inspect" do
+      it "is expected to start with the head data and a pointer" do
+        expect(inspect).to start_with("[#{head.data} -> ")
+      end
+
+      it "is expected to end with the a pointer and the tail data" do
+        expect(inspect).to end_with(" -> #{tail.data}]")
       end
     end
   end
@@ -147,6 +184,23 @@ describe SingleLinkedList do
           expect(list.find_by_index(9)).not_to be_nil
         end
       end
+    end
+  end
+end
+
+describe SingleLinkedList::Node do
+  let(:node) { SingleLinkedList::Node.new }
+  let(:data) { node.data }
+  let(:pointer) { node.pointer }
+
+  describe "#data" do
+    subject { node.data }
+    it { is_expected.not_to be_nil }
+  end  
+  
+  describe "#inspect" do
+    it "should contain the node data, a pointer, and the pointer's data" do
+      expect(node.inspect).to eql("#{data} -> #{pointer.inspect}")
     end
   end
 end
