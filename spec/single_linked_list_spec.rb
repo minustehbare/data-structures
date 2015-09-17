@@ -4,6 +4,7 @@ describe SingleLinkedList do
   let(:list) { SingleLinkedList.new }
   let(:head) { list.head }
   let(:tail) { list.tail }
+  let(:count) { list.count }
   let(:inspect) { list.inspect }
   
   shared_examples "a populated list" do
@@ -34,7 +35,7 @@ describe SingleLinkedList do
     end
 
     describe "#inspect" do
-      it "should be empty" do
+      it "returns an empty list representation" do
         expect(inspect).to eql("[]")
       end
     end
@@ -55,9 +56,9 @@ describe SingleLinkedList do
         expect(tail).to equal(head)
       end
     end
-    
+
     describe "#inspect" do
-      it "contains the head data" do
+      it "returns a list representation containing the head data" do
         expect(inspect).to eql("[#{head.data}]")
       end
     end
@@ -85,8 +86,8 @@ describe SingleLinkedList do
     end
     
     describe "#inspect" do
-      it "contains the head data pointing to the tail data" do
-        expect(inspect).to eql("[#{head.data} -> #{tail.data}]")
+      it "returns a list representation with the head data, a pointer, and the tail data" do
+        expect(inspect).to eql("[#{head.data}->#{tail.data}]")
       end
     end
   end
@@ -103,7 +104,7 @@ describe SingleLinkedList do
         expect(tail).not_to equal(head)
       end
     end
-
+   
     describe "the head node's pointer" do
       it "does not point to the tail" do
         expect(head.pointer).not_to equal(tail)
@@ -111,12 +112,12 @@ describe SingleLinkedList do
     end
 
     describe "#inspect" do
-      it "is expected to start with the head data and a pointer" do
-        expect(inspect).to start_with("[#{head.data} -> ")
+      it "returns a list representation starting with the head data and a pointer" do
+        expect(inspect).to start_with("[#{head.data}->")
       end
 
-      it "is expected to end with the a pointer and the tail data" do
-        expect(inspect).to end_with(" -> #{tail.data}]")
+      it "returns a list representation ending with a pointer and the tail data" do
+        expect(inspect).to end_with("->#{tail.data}]")
       end
     end
   end
@@ -186,6 +187,13 @@ describe SingleLinkedList do
       end
     end
   end
+
+  describe "#count" do
+    it "returns the number of nodes in the list" do
+      10.times { list.append(SingleLinkedList::Node.new) }
+      expect(list.count).to be(10)
+    end
+  end
 end
 
 describe SingleLinkedList::Node do
@@ -199,8 +207,8 @@ describe SingleLinkedList::Node do
   end  
   
   describe "#inspect" do
-    it "should contain the node data, a pointer, and the pointer's data" do
-      expect(node.inspect).to eql("#{data} -> #{pointer.inspect}")
+    it "returns the node data, a pointer, and the pointer's data" do
+      expect(node.inspect).to eql("#{data}->#{pointer.inspect}")
     end
   end
 end

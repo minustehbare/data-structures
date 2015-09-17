@@ -1,10 +1,9 @@
 class SingleLinkedList
+  include Enumerable
   attr_reader :head
   
   def tail
-    tail_node = nil
-    self.each { |node| tail_node = node }
-    return tail_node
+    return self.reduce(nil) { |tail, node| node }
   end
   
   def append(new_node)
@@ -22,18 +21,14 @@ class SingleLinkedList
   end
   
   def find_by_data(data)
-    self.each { |node| return node if node.data == data }
-  end
-  
-  def find_by_index(x)
-    return nil if x < 0
-    i = 0
-    self.each { |node|
-      return node if x == i
-      i += 1
-    }
+    self.find { |node| node.data == data }
   end
 
+  def find_by_index(x)
+    self.each_with_index { |node, i| return node if i == x }
+    return nil
+  end
+  
   def each
     return nil unless @head
     
@@ -43,18 +38,9 @@ class SingleLinkedList
       node = node.pointer
     end
   end
-
+  
   def inspect
-    output = "["
-    self.each { |n|
-      if output == "["
-        output = "#{output}#{n.data}"
-      else
-        output = "#{output} -> #{n.data}"
-      end
-    }
-    
-    return "#{output}]"
+    return "[#{self.entries.map { |node| node.data }.join("->")}]"
   end
   
   class Node
@@ -67,7 +53,7 @@ class SingleLinkedList
     end
 
     def inspect
-      return "#{@data} -> #{pointer.inspect}"
+      return "#{@data}->#{pointer.inspect}"
     end
   end
 end
