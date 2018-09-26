@@ -1,19 +1,5 @@
 # Data structures
 
-This is a simple repository for me to fiddle with creating (possibly bad)
-implementations of classic data structures.
+A collection of data structure implementations across various languages.  Each directory represents a language, with that directory being a self-contained project structure for the given language.
 
-There really is not anything more to say than that, but I plan to implement
-things like:
-  * Array
-  * Linked List
-  * Stack
-  * Queue
-  * Tree (generic, binary, binary search, red-black, etc.)
-  * Heap
-  * Hash Table
-  * Graph (directed, undirected, weighted)
-  * Trie
-  * Linked Hash Map
-  
-Implementations will be in Ruby and unit tests created with RSpec.
+Public APIs for the various implemented objects will have automated tests for verification.
